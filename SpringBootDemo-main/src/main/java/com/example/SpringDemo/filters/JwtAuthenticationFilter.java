@@ -24,8 +24,8 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
-    private final UserService userService;
+    private final JwtService jwtService;// được sử dụng để xử lý JWT
+    private final UserService userService;//để tìm kiếm và xác thực người dùng.
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -41,9 +41,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         jwt = authHeader.substring(7);
         log.debug("JWT - {}", jwt);
-        userEmail = jwtService.extractUserName(jwt);
-        if (StringUtils.isNotEmpty(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null) {
+        userEmail = jwtService.extractUserName(jwt);//lưu trữ email của người dùng và lấy từ JWT
+        if (StringUtils.isNotEmpty(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null)
+        	{
+        	//load thông tin dùng
             UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
+            //kiểm tra jwt hợp lệ
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 log.debug("User - {}", userDetails);
                 SecurityContext context = SecurityContextHolder.createEmptyContext();

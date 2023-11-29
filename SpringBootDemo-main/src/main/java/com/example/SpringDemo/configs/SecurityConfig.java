@@ -30,10 +30,11 @@ public class SecurityConfig {
     private final PasswordEncoder passwordEncoder;
 
     @Bean
+    //cấu hình đăng nhập
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService.userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder);
+        authProvider.setUserDetailsService(userService.userDetailsService()); //tìm kiếm và xác thực người dùng
+        authProvider.setPasswordEncoder(passwordEncoder);//mã hóa pass 
         return authProvider;
     }
 
@@ -52,7 +53,7 @@ public class SecurityConfig {
 
         .cors(cors -> cors.configurationSource(request -> {
             CorsConfiguration corsConfiguration = new CorsConfiguration();
-            corsConfiguration.addAllowedOriginPattern("*"); // Sử dụng allowedOriginPattern thay vì allowedOrigins
+            corsConfiguration.addAllowedOriginPattern("*");
             corsConfiguration.addAllowedMethod("*");
             corsConfiguration.addAllowedHeader("*");
             corsConfiguration.setAllowCredentials(true);
