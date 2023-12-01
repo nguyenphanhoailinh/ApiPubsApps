@@ -21,9 +21,11 @@ public class DishService {
 	public List<Dish> getAllDish() {
 		return dishRepo.findAll();
 	}
-
+	public boolean existsById(Long id) {
+        return dishRepo.existsById(id);
+    }
 	public Dish getDishById(Long id) {
-		return dishRepo.findById(id).orElseThrow(() -> new ResourceAccessException("Table not found"));
+		return dishRepo.findById(id).orElseThrow(() -> new ResourceAccessException("Dish not found"));
 	}
 
 	public Dish createDish(Dish table) {

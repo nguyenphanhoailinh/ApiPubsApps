@@ -45,7 +45,7 @@ public class DishController {
 	  @DeleteMapping("/delete/{id}") 
 	  public ResponseEntity<String> deleteDish(@PathVariable Long id) {
 	    dishService.deleteDish(id);
-	    return ResponseEntity.ok("Table deleted");
+	    return ResponseEntity.ok("Order deleted");
 	  }
 	  
 }

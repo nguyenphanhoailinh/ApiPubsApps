@@ -23,7 +23,9 @@ public class UserService {
                 .findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
-
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
+    }
     public User create(User newUser) {
         return userRepository.save(newUser);
     }

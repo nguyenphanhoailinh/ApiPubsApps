@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
