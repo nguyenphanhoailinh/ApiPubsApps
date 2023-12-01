@@ -18,28 +18,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TableService {
 
-  @Autowired
-  private TableRepository tableRepo;
-  
-  
-  public List<TableEntity> getAllTables() {
-	    return tableRepo.findAll();
-	  }
+	@Autowired
+	private TableRepository tableRepo;
 
-	  public TableEntity getTableById(Long id) {
-	    return tableRepo.findById(id)
-	      .orElseThrow(() -> new ResourceAccessException("Table not found")); 
-	  }
-  public TableEntity createTable(TableEntity table) {
-    return tableRepo.save(table); 
-  }
+	public List<TableEntity> getAllTables() {
+		return tableRepo.findAll();
+	}
 
-  public TableEntity updateTable(TableEntity table) {
-    return tableRepo.save(table);
-  }
+	public TableEntity getTableById(Long id) {
+		return tableRepo.findById(id).orElseThrow(() -> new ResourceAccessException("Table not found"));
+	}
 
-  public void deleteTable(Long id) {
-    tableRepo.deleteById(id);
-  }
+	public TableEntity createTable(TableEntity table) {
+		return tableRepo.save(table);
+	}
+
+	public TableEntity updateTable(TableEntity table) {
+		return tableRepo.save(table);
+	}
+
+	public void deleteTable(Long id) {
+		tableRepo.deleteById(id);
+	}
 
 }
