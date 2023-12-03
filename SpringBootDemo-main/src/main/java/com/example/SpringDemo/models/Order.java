@@ -23,11 +23,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @Entity(name="orders")
-public class Order {
+public class  Order {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idorder;
+    private Long idorderr;
 
 	/*
 	 * @ManyToOne
