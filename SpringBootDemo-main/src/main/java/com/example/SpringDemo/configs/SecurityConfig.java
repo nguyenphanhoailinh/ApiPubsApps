@@ -28,7 +28,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-
+    
     @Bean
     //cấu hình đăng nhập
     public AuthenticationProvider authenticationProvider() {

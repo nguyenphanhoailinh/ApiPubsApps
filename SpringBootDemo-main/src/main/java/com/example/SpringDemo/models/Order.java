@@ -46,5 +46,7 @@ public class  Order {
 
     @Column(name = "status", length = 50)
     private Status status;
+    
+
 
 }

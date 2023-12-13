@@ -1,5 +1,7 @@
 package com.example.SpringDemo.models;
 
+import java.text.DecimalFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class Dish {
 	private String namedish;
 	private String imagedish;
 	
+	private float price;
 	
 }
 
