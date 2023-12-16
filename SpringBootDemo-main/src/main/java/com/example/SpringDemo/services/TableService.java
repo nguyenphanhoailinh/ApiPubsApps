@@ -32,6 +32,7 @@ public class TableService {
 	public TableEntity createTable(TableEntity table) {
 		return tableRepo.save(table);
 	}
+	
 
 	public TableEntity updateTable(TableEntity table) {
 		return tableRepo.save(table);

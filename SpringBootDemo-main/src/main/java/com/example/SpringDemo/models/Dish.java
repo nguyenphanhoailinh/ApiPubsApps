@@ -2,6 +2,7 @@ package com.example.SpringDemo.models;
 
 import java.text.DecimalFormat;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +25,9 @@ public class Dish {
 	private Long iddish;
 
 	private String namedish;
-	private String imagedish;
+	//image Dish
+	@Column(name = "imagefilename")
+    private String imagefilename;
 	
 	private float price;
 	

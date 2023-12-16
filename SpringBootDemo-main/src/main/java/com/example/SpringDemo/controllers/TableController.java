@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.SpringDemo.dto.JwtAuthenticationResponse;
 import com.example.SpringDemo.dto.SignUpRequest;
 import com.example.SpringDemo.dto.TableRequest;
+import com.example.SpringDemo.models.Dish;
 import com.example.SpringDemo.models.TableEntity;
 import com.example.SpringDemo.repositories.TableRepository;
+import com.example.SpringDemo.services.DishService;
 import com.example.SpringDemo.services.TableService;
 
 @RestController
@@ -27,7 +29,8 @@ public class TableController {
 	
 	@Autowired
 	  private TableService tableService;
-	
+	@Autowired 
+		private DishService dishService;
 	@GetMapping("")
 	public ResponseEntity<List<TableEntity>> getAllTables() {
 
@@ -51,7 +54,15 @@ public class TableController {
 	    TableEntity created = tableService.createTable(table);
 	    return ResponseEntity.ok(created);
 	  }
-
+	  
+	  @PostMapping("/{tableid}/dishes/{dishid}")
+	  public void adDishToTable(@PathVariable Long tableid,@PathVariable Long dishid) {
+		  Dish dish = dishService.getDishById(dishid);
+		  if(dish != null) {
+			  
+		  }
+	  }
+	  
 	  @PutMapping("/update/{id}")
 	  public ResponseEntity<TableEntity> updateTable(@RequestBody TableEntity table, @PathVariable Long id) {
 	    table.setIdtable(id);

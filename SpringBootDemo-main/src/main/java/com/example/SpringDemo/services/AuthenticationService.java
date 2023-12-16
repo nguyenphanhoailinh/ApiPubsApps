@@ -30,7 +30,7 @@ public class AuthenticationService {
                 .username(request.getUsername())
                 .fullname(request.getFullname())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role("admin")
+                .role("user")
                 .build();
 
         user = userService.create(user);

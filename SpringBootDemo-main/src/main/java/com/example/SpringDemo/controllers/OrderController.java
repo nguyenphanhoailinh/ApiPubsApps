@@ -45,35 +45,6 @@ public class OrderController {
 		return ResponseEntity.ok(orders);
 	}
 	
-//	  @PostMapping("/create")
-//	  public ResponseEntity<Order> createDish(@RequestBody Order order) {
-//	    Order create = orderService.createOrder(order);
-//	    return ResponseEntity.ok(create);
-//	  }
-	  
-//	@PostMapping("/create")
-//	public ResponseEntity<Order> createDonHang(@RequestBody Map<String, String> body) {
-//		Order donHang = new Order();
-//	    
-//	    Dish dish = dishService.getDishById(Long.parseLong(body.get("dish"))); // lấy món ăn
-//	    User user = userService.getById(Long.parseLong(body.get("user"))); // lấy user
-//
-//	    donHang.setDish(dish);
-//	    donHang.setUser(user);
-//	    try {
-//	        donHang.setNgaygiodat(new SimpleDateFormat("dd/MM/yyyy").parse(body.get("ngaygiodat")));
-//	    } catch (ParseException e) {
-//	        e.printStackTrace();
-//	    }
-//	    Status status = Status.valueOf(body.get("status").toUpperCase());
-//	    donHang.setStatus(status);
-//
-//	    Order createdDonHang = orderService.createOrder(donHang); // assuming you have a service to save DonHang
-//
-//	    return ResponseEntity.ok(createdDonHang);
-//	}
-	
-	//Oke
 	@PostMapping("/create")
 	public ResponseEntity<Order> createDonHang(@RequestBody Map<String, String> body) {
 	    Order donHang = new Order();
