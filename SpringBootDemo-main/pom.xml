@@ -111,6 +111,11 @@
 			<artifactId>LoginRectAPI</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.laptrinhjavaweb</groupId>
+			<artifactId>news</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
