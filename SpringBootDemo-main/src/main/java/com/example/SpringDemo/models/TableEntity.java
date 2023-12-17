@@ -1,5 +1,7 @@
 package com.example.SpringDemo.models;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +18,9 @@ public class TableEntity{
 	private Long Idtable;
 	
 	private String nametable;
+	
+	@ManyToMany
+	public List<Dish> dish;
 	@Enumerated(EnumType.STRING)
 	private Status status;
 

@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
 import com.example.SpringDemo.dto.TableRequest;
+import com.example.SpringDemo.models.Dish;
 import com.example.SpringDemo.models.TableEntity;
+import com.example.SpringDemo.repositories.DishRepository;
 import com.example.SpringDemo.repositories.TableRepository;
 import com.example.SpringDemo.repositories.UserRepository;
 
@@ -20,7 +22,8 @@ public class TableService {
 
 	@Autowired
 	private TableRepository tableRepo;
-
+	@Autowired
+	private DishRepository dishRepo;
 	public List<TableEntity> getAllTables() {
 		return tableRepo.findAll();
 	}
@@ -32,7 +35,21 @@ public class TableService {
 	public TableEntity createTable(TableEntity table) {
 		return tableRepo.save(table);
 	}
-	
+	public TableEntity addDishToTable(Long tableId, Long dishId) {
+	    // Tìm bàn với id đã cho
+	    TableEntity table = tableRepo.findById(tableId)
+	        .orElseThrow();
+
+	    // Tìm món ăn với id đã cho
+	    Dish dish = dishRepo.findById(dishId)
+	        .orElseThrow();
+
+	    // Thêm món ăn vào bàn
+	    table.getDish().add(dish);
+
+	    // Lưu và trả về bàn đã được cập nhật
+	    return tableRepo.save(table);
+	}
 
 	public TableEntity updateTable(TableEntity table) {
 		return tableRepo.save(table);

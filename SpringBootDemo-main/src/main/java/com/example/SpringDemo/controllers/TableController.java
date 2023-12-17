@@ -26,53 +26,52 @@ import com.example.SpringDemo.services.TableService;
 @RestController
 @RequestMapping("/api/v1/tables")
 public class TableController {
-	
+
 	@Autowired
-	  private TableService tableService;
-	@Autowired 
-		private DishService dishService;
+	private TableService tableService;
+	@Autowired
+	private DishService dishService;
+
 	@GetMapping("")
 	public ResponseEntity<List<TableEntity>> getAllTables() {
 
-	  List<TableEntity> tables = tableService.getAllTables();
+		List<TableEntity> tables = tableService.getAllTables();
 
-	  return ResponseEntity.ok(tables);
+		return ResponseEntity.ok(tables);
 
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<TableEntity> getTableById(@PathVariable Long id) {
 
-	  TableEntity table = tableService.getTableById(id);
+		TableEntity table = tableService.getTableById(id);
 
-	  return ResponseEntity.ok(table);
+		return ResponseEntity.ok(table);
 
 	}
-	
-	  @PostMapping("/create")
-	  public ResponseEntity<TableEntity> createTable(@RequestBody TableEntity table) {
-	    TableEntity created = tableService.createTable(table);
-	    return ResponseEntity.ok(created);
-	  }
-	  
-	  @PostMapping("/{tableid}/dishes/{dishid}")
-	  public void adDishToTable(@PathVariable Long tableid,@PathVariable Long dishid) {
-		  Dish dish = dishService.getDishById(dishid);
-		  if(dish != null) {
-			  
-		  }
-	  }
-	  
-	  @PutMapping("/update/{id}")
-	  public ResponseEntity<TableEntity> updateTable(@RequestBody TableEntity table, @PathVariable Long id) {
-	    table.setIdtable(id);
-	    TableEntity updated = tableService.updateTable(table);
-	    return ResponseEntity.ok(updated);  
-	  }
 
-	  @DeleteMapping("/delete/{id}") 
-	  public ResponseEntity<String> deleteTable(@PathVariable Long id) {
-	    tableService.deleteTable(id);
-	    return ResponseEntity.ok("Table deleted");
-	  }
+	@PostMapping("/create")
+	public ResponseEntity<TableEntity> createTable(@RequestBody TableEntity table) {
+		TableEntity created = tableService.createTable(table);
+		return ResponseEntity.ok(created);
+	}
+
+	@PostMapping("{Idtable}/dishes/{iddish}")
+	public ResponseEntity<TableEntity> addDishToTable(@PathVariable Long Idtable, @PathVariable Long iddish) {
+	    TableEntity table = tableService.addDishToTable(Idtable, iddish);
+	    return new ResponseEntity<>(table, HttpStatus.OK);
+	}
+
+	@PutMapping("/update/{id}")
+	public ResponseEntity<TableEntity> updateTable(@RequestBody TableEntity table, @PathVariable Long id) {
+		table.setIdtable(id);
+		TableEntity updated = tableService.updateTable(table);
+		return ResponseEntity.ok(updated);
+	}
+
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<String> deleteTable(@PathVariable Long id) {
+		tableService.deleteTable(id);
+		return ResponseEntity.ok("Table deleted");
+	}
 }
