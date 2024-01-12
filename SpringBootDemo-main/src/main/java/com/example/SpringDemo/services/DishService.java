@@ -52,4 +52,11 @@ public class DishService {
 	public void deleteDish(Long id) {
 		dishRepo.deleteById(id);
 	}
+//	public void deleteDishAndOrders(Long id) {
+//	    // Xóa tất cả các đơn hàng liên quan đến món ăn
+//	    orderService.deleteOrdersByDishId(id);
+//
+//	    // Xóa món ăn
+//	    dishService.deleteDish(id);
+//	}
 }

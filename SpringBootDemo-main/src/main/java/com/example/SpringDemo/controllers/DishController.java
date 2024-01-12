@@ -251,8 +251,8 @@ public class DishController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	@PreAuthorize("hasAuthority('admin')")
-	public ResponseEntity<String> deleteDish(@PathVariable Long id) {
+
+	public ResponseEntity<?> deleteDish(@PathVariable Long id) {
 		dishService.deleteDish(id);
 		return ResponseEntity.ok("Order deleted");
 	}

@@ -17,36 +17,25 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Getter
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
-@Entity(name="orders")
-public class  Order {
-	
+@Entity(name = "orders")
+public class Order {
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idorder;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idorder;
+	@ManyToMany
+	private List<Dish> dishes;
+	@ManyToOne
+	@JoinColumn(name = "iduser", nullable = false)
+	private User user;
+	@Column(name = "ngaygiodat")
+	private Date ngaygiodat;
 
-	/*
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name="iddish", nullable=false) private Dish dish;
-	 */
-	 @ManyToMany
-	    private List<Dish> dishes;
-//    private String namedish;
-    @ManyToOne
-    @JoinColumn(name="iduser", nullable=false)
-    private User user;
-//    private String fullname;
-    @Column(name = "ngaygiodat")
-    private Date ngaygiodat;
-
-    @Column(name = "status", length = 50)
-    private Status status;
-    
-
+	@Column(name = "status", length = 50)
+	private Status status;
 
 }
