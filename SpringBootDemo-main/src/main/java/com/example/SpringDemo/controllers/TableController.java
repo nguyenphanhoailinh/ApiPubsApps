@@ -26,7 +26,7 @@ public class TableController {
 	@Autowired
 	private DishService dishService;
 
-	@GetMapping("")
+	@GetMapping("all")
 	public ResponseEntity<List<TableEntity>> getAllTables() {
 
 		List<TableEntity> tables = tableService.getAllTables();

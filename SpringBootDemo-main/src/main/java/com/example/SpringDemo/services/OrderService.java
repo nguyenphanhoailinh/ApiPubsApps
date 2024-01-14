@@ -23,12 +23,18 @@ public class OrderService {
 	public List<Order> getAllOrders() {
 		return orderRepo.findAll();
 	}
+//	public List<Order> getOrdersByTableId(Long idtable) {
+//        return orderRepo.findByTableId(idtable);
+//    }
+	public List<Order> getOrdersByTableId(Long idtable) {
+        return orderRepo.findByTable_Idtable(idtable);
+    }
 	public Order getOrderById(Long id) {
 		return orderRepo.findById(id).orElseThrow(() -> new ResourceAccessException("Order not found"));
 	}
 
 	public Order createOrder(Order order) {
-		order.setStatus(Status.ĐANG_SỬ_DỤNG); // Set default status to PENDING
+		order.setStatus(Status.dangSuDung); // Set default status to PENDING
 		return orderRepo.save(order);
 	}
 	public Order updateOrder(Order order) {

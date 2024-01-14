@@ -3,6 +3,8 @@ package com.example.SpringDemo.models;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,17 +33,13 @@ public class Order {
 	@ManyToMany
 	private List<Dish> dishes;
 
-	@ManyToOne
-	@JoinColumn(name = "username", nullable = false)
-	private User user;
-
 	@Column(name = "ngaygiodat")
 	private Date ngaygiodat;
-
 	@ManyToOne
 	@JoinColumn(name = "idtable", nullable = false)
 	private TableEntity table;
 
 	@Column(name = "status", length = 50)
 	private Status status;
+	private double totalAmount;
 }

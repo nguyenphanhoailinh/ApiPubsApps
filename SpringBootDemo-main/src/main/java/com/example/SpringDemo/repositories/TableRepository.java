@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface TableRepository extends JpaRepository<TableEntity, Long>{
     Optional<TableEntity> findByNametable(String nametable);
+    
 }

@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class TableEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long Idtable;
+	private Long idtable;
 	
 	private String nametable;
 

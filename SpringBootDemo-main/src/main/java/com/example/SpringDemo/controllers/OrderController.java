@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.SpringDemo.models.*;
+import com.example.SpringDemo.repositories.DishRepository;
+import com.example.SpringDemo.repositories.OrderRepository;
+import com.example.SpringDemo.repositories.TableRepository;
 import com.example.SpringDemo.services.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,36 +34,44 @@ public class OrderController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private OrderRepository orderRepository;
+	@Autowired
+	TableRepository tableRepository;
 
 	@GetMapping("/all")
-	public ResponseEntity<List<Order>> getAllOrders() {
-		List<Order> orders = orderService.getAllOrders();
-		return ResponseEntity.ok(orders);
-	}
-
-	@PostMapping("/create")
-	public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-
+    public ResponseEntity<List<Order>> getAllOrders() {
+        List<Order> orders = orderService.getAllOrders();
+        return ResponseEntity.ok().body(orders);
+    }
+	@GetMapping("/{idtable}")
+    public ResponseEntity<List<Order>> getOrdersByTableId(@PathVariable Long idtable) {
+        List<Order> orders = orderService.getOrdersByTableId(idtable);
+        return ResponseEntity.ok().body(orders);
+    }
+	@PostMapping("/new")
+	public ResponseEntity<Order> createOrder(@RequestBody OrderDish orderdish) {
+		
+		System.out.print(orderdish);
+		
 		try {
-			// Assign user and table entities based on IDs
-			User user = userService.getByUsername(order.getUser().getUsername());
-			TableEntity table = tableService.getTableById(order.getTable().getIdtable());
-			order.setUser(user);
-			order.setTable(table);
+			List<Dish> dishes = dishService.getlistidDish(orderdish.getIddish());
 
-			// Set current date/time for ngaygiodat
-			order.setNgaygiodat(new Date());
+			Order _order = new Order();
+			_order.setDishes(dishes);
+			_order.setNgaygiodat(orderdish.getNgaygiodat());
 
-			// Handle potential exceptions from service calls
+			TableEntity table = tableRepository.getById(orderdish.getIdtable());
+			// Sau đó gán cho _order
+			_order.setTable(table);
+
+			_order.setTotalAmount(orderdish.getTotalAmount());
+			System.out.print(_order);
+			orderService.createOrder(_order);
+			return new ResponseEntity<>(_order, HttpStatus.CREATED);
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-
-		// Create the order using the service
-		Order createdOrder = orderService.createOrder(order);
-
-		// Return the created order with a success status
-		return ResponseEntity.ok(createdOrder);
 	}
 
 	@PutMapping("/update/{id}")

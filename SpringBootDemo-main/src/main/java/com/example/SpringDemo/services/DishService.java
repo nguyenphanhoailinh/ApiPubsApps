@@ -40,7 +40,9 @@ public class DishService {
 	public Dish getDishById(Long id) {
 		return dishRepo.findById(id).orElseThrow(() -> new ResourceAccessException("Dish not found"));
 	}
-
+	public List<Dish> getlistidDish(List<Long> id){
+		return dishRepo.findByIdsIndd(id);
+	}
 	public Dish createDish(Dish dish) {
 		return dishRepo.save(dish);
 	}
