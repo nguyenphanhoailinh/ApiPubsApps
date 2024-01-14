@@ -27,15 +27,21 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idorder;
+
 	@ManyToMany
 	private List<Dish> dishes;
+
 	@ManyToOne
-	@JoinColumn(name = "iduser", nullable = false)
+	@JoinColumn(name = "username", nullable = false)
 	private User user;
+
 	@Column(name = "ngaygiodat")
 	private Date ngaygiodat;
 
+	@ManyToOne
+	@JoinColumn(name = "idtable", nullable = false)
+	private TableEntity table;
+
 	@Column(name = "status", length = 50)
 	private Status status;
-
 }

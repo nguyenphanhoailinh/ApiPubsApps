@@ -49,34 +49,6 @@ public class DishController {
 		return ResponseEntity.ok(dish);
 	}
 
-//	
-//	  @PostMapping("/create")
-//	  public ResponseEntity<Dish> createDish(@RequestBody Dish dish,@RequestParam("image") MultipartFile imageFile) {
-//	    try {
-//	    	String uploadDir = "src/main/resources/static/images/";
-//	    	
-//	    	String filename = StringUtils.cleanPath(imageFile.getOriginalFilename());
-//	    	Path uploadPath = Paths.get(uploadDir);
-//			if (!Files.exists(uploadPath)) {
-//				Files.createDirectories(uploadPath);
-//			}
-//			try (InputStream inputStream = imageFile.getInputStream()) {
-//				Path filePath = uploadPath.resolve(filename);
-//				Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-//			} catch (IOException ioe) {
-//				throw new IOException("Could not save image file: " + filename, ioe);
-//			}
-//
-//			// Set the product's image filename and save the product
-//			dish.setImagefilename(filename);
-//			dishService.createDish(dish);
-//	    }catch (IOException e) {
-//			e.printStackTrace();
-//		  
-//	    }
-//	    return ResponseEntity.ok(dish);
-//	  }
-//	  
 	@PostMapping("/uploadImage")
 	public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile imageFile) {
 		try {
@@ -141,78 +113,6 @@ public class DishController {
 		InputStreamResource resource = dishService.getimages(imageName);
 		return ResponseEntity.ok().body(resource);
 	}
-
-//	  @PutMapping("/update/{id}")
-//	  public ResponseEntity<Dish> updateDish(@RequestBody Dish dish, @PathVariable Long id) {
-//	    dish.setIddish(id);
-//	    Dish updated = dishService.updateDish(dish);
-//	    return ResponseEntity.ok(updated);  
-//	  }
-//	  @PatchMapping("/update/{id}")
-//	  public ResponseEntity<Dish> updateDish(@RequestBody Map<String, Object> fields, @PathVariable Long id) {
-//	      Dish dish = dishService.getDishById(id);
-//
-//	      if (dish != null) {
-//	          fields.forEach((k, v) -> {
-//	              Field field = ReflectionUtils.findField(Dish.class, k);
-//	              if (field != null) {
-//	                  field.setAccessible(true);
-//	                  ReflectionUtils.setField(field, dish, v);
-//	              }
-//	          });
-//
-//	          Dish updated = dishService.updateDish(dish);
-//	          return ResponseEntity.ok(updated);
-//	      } else {
-//	          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dish not found");
-//	      }
-//	  }
-//	  @PutMapping("/update/{id}")
-//	    public Dish updateDish(@PathVariable Long id, @RequestBody Dish dishDetails){
-//	        Dish dish = dishService.getDishById(id);
-//
-//	        dish.setNamedish(dishDetails.getNamedish());
-//	        dish.setPrice(dishDetails.getPrice());
-//	        dish.setImagefilename(dishDetails.getImagefilename());
-//
-//	        Dish updatedDish = dishService.updateDish(dish);
-//	        return updatedDish;
-//	    }
-
-//	@PutMapping("/update/{id}")
-//	public ResponseEntity<?> updateDish(@PathVariable Long id, @RequestParam("namedish") String namedish,
-//	        @RequestParam("price") float price, @RequestParam(value = "image", required = false) MultipartFile imageFile) {
-//	    try {
-//	        String uploadDir = "src/main/resources/static/images/";
-//	        Dish dish = dishService.getDishById(id);
-//	        dish.setNamedish(namedish);
-//	        dish.setPrice(price);
-//
-//	        if (imageFile != null && !imageFile.isEmpty()) {
-//	            String filename = StringUtils.cleanPath(imageFile.getOriginalFilename());
-//	            Path uploadPath = Paths.get(uploadDir);
-//	            if (!Files.exists(uploadPath)) {
-//	                Files.createDirectories(uploadPath);
-//	            }
-//	            try (InputStream inputStream = imageFile.getInputStream()) {
-//	                Path filePath = uploadPath.resolve(filename);
-//	                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-//	            } catch (IOException ioe) {
-//	                throw new IOException("Could not save image file: " + filename, ioe);
-//	            }
-//
-//	            // Set the dish's image filename and save the dish
-//	            String imageUrl = "http://localhost:8888/api/v1/dishs/" + filename;
-//	            dish.setImagefilename(imageUrl);
-//	        }
-//
-//	        Dish updatedDish = dishService.updateDish(dish);
-//	        return ResponseEntity.ok(updatedDish);
-//	    } catch (IOException e) {
-//	        e.printStackTrace();
-//	        return (ResponseEntity<?>) ResponseEntity.badRequest();
-//	    }
-//	}
 
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> updateDish(@PathVariable Long id, @RequestParam("namedish") String namedish,

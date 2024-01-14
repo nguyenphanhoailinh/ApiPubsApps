@@ -2,6 +2,7 @@ package com.example.SpringDemo.services;
 
 import java.util.List;
 
+import com.example.SpringDemo.models.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
@@ -27,9 +28,9 @@ public class OrderService {
 	}
 
 	public Order createOrder(Order order) {
+		order.setStatus(Status.ĐANG_SỬ_DỤNG); // Set default status to PENDING
 		return orderRepo.save(order);
 	}
-
 	public Order updateOrder(Order order) {
 		return orderRepo.save(order);
 	}

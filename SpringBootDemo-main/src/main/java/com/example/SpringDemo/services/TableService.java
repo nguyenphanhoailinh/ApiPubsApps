@@ -2,6 +2,7 @@ package com.example.SpringDemo.services;
 
 import java.util.List;
 
+import com.example.SpringDemo.models.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,6 @@ public class TableService {
 	        .orElseThrow();
 
 	    // Thêm món ăn vào bàn
-	    table.getDish().add(dish);
 
 	    // Lưu và trả về bàn đã được cập nhật
 	    return tableRepo.save(table);
@@ -57,6 +57,22 @@ public class TableService {
 
 	public void deleteTable(Long id) {
 		tableRepo.deleteById(id);
+	}
+
+	public TableEntity addDishesToTable(Long tableId, List<Long> dishIds) {
+		TableEntity table = tableRepo.findById(tableId)
+				.orElseThrow();
+
+		List<Dish> dishes = dishRepo.findAllById(dishIds);
+
+		return tableRepo.save(table);
+	}
+	public TableEntity updateTableStatus(String tableName, Status newStatus) {
+		TableEntity table = tableRepo.findByNametable(tableName)
+				.orElseThrow(() -> new ResourceAccessException("Table not found"));
+
+		table.setStatus(newStatus);
+		return tableRepo.save(table);
 	}
 
 }

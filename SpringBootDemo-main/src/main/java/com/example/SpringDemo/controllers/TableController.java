@@ -2,17 +2,11 @@ package com.example.SpringDemo.controllers;
 
 import java.util.List;
 
+import com.example.SpringDemo.models.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.SpringDemo.dto.JwtAuthenticationResponse;
 import com.example.SpringDemo.dto.SignUpRequest;
@@ -56,11 +50,21 @@ public class TableController {
 		return ResponseEntity.ok(created);
 	}
 
-	@PostMapping("{Idtable}/dishes/{iddish}")
-	public ResponseEntity<TableEntity> addDishToTable(@PathVariable Long Idtable, @PathVariable Long iddish) {
-	    TableEntity table = tableService.addDishToTable(Idtable, iddish);
-	    return new ResponseEntity<>(table, HttpStatus.OK);
+	@PostMapping("/{tableId}/dishes")
+	public ResponseEntity<TableEntity> addDishesToTable(
+			@PathVariable Long tableId,
+			@RequestBody List<Long> dishIds) {
+		TableEntity table = tableService.addDishesToTable(tableId, dishIds);
+		return new ResponseEntity<>(table, HttpStatus.OK);
 	}
+	@PostMapping("/{tableName}/update-status")
+	public ResponseEntity<TableEntity> updateTableStatus(@PathVariable String tableName,
+														 @RequestParam Status newStatus) {
+		TableEntity updatedTable = tableService.updateTableStatus(tableName, newStatus);
+		return ResponseEntity.ok(updatedTable);
+	}
+
+
 
 	@PutMapping("/update/{id}")
 	public ResponseEntity<TableEntity> updateTable(@RequestBody TableEntity table, @PathVariable Long id) {

@@ -18,9 +18,7 @@ public class TableEntity{
 	private Long Idtable;
 	
 	private String nametable;
-	
-	@ManyToMany
-	public List<Dish> dish;
+
 	@Enumerated(EnumType.STRING)
 	private Status status;
 
