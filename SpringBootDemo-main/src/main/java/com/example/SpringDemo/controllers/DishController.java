@@ -150,11 +150,10 @@ public class DishController {
 		}
 	}
 
-	@DeleteMapping("/delete/{id}")
-
-	public ResponseEntity<?> deleteDish(@PathVariable Long id) {
-		dishService.deleteDish(id);
-		return ResponseEntity.ok("Order deleted");
+	@DeleteMapping("/delete/{iddish}")
+	public ResponseEntity<?> deleteDish(@PathVariable Long iddish) {
+		dishService.deleteDish(iddish);
+		return ResponseEntity.ok("Dish deleted");
 	}
 
 }

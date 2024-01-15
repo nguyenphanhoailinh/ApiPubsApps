@@ -51,8 +51,8 @@ public class DishService {
 		return dishRepo.save(dish);
 	}
 
-	public void deleteDish(Long id) {
-		dishRepo.deleteById(id);
+	public void deleteDish(Long iddish) {
+		dishRepo.deleteById(iddish);
 	}
 
 }
