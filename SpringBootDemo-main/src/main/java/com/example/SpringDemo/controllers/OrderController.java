@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.example.SpringDemo.models.*;
 import com.example.SpringDemo.repositories.DishRepository;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.SpringDemo.services.DishService;
 import com.example.SpringDemo.services.OrderService;
+import com.example.SpringDemo.services.ReportOrderService;
 import com.example.SpringDemo.services.UserService;
 
 @RestController
@@ -36,6 +38,8 @@ public class OrderController {
 	private UserService userService;
 	@Autowired
 	private OrderRepository orderRepository;
+	@Autowired
+	private ReportOrderService reportOrderService;
 	@Autowired
 	TableRepository tableRepository;
 
@@ -81,9 +85,47 @@ public class OrderController {
 		return ResponseEntity.ok(updated);
 	}
 
+//	@DeleteMapping("/delete/{id}")
+//	public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
+//		Order order =orderService.getOrderById(id);
+//		if(order == null) {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");
+//		}
+//		ReportOrder reportOrder = new ReportOrder();
+//		reportOrder.setIdorder(order.getIdorder());
+//		reportOrder.setDeletedAt(new Date());
+//		reportOrderService.saveReportOrder(reportOrder);
+//		orderService.deleteOrder(id);
+//		return ResponseEntity.ok("Order deleted ");
+//	}
+	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
-		orderService.deleteOrder(id);
-		return ResponseEntity.ok("Order deleted");
+	    Order order = orderService.getOrderById(id);
+	    if(order == null) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");
+	    }
+	    ReportOrder reportOrder = new ReportOrder();
+	    reportOrder.setIdorder(order.getIdorder());
+	    reportOrder.setDishes(order.getDishes().stream().map(dish -> {
+	        DishInfo dishInfo = new DishInfo();
+	        dishInfo.setDishname(dish.getNamedish());
+	        dishInfo.setPrice(dish.getPrice());
+	        return dishInfo;
+	    }).collect(Collectors.toList()));
+	    reportOrder.setNgaygiodat(order.getNgaygiodat());
+	    reportOrder.setTableId(order.getTable().getIdtable());
+	    reportOrder.setStatus(order.getStatus().toString());
+	    reportOrder.setTotalAmount(order.getTotalAmount());
+	    reportOrder.setDeletedAt(new Date());
+	    reportOrderService.saveReportOrder(reportOrder);
+	    orderService.deleteOrder(id);
+	    return ResponseEntity.ok("Order deleted and saved to ReportOrder");
+	}
+	@GetMapping("/report/{id}")
+	public ResponseEntity<?> getReportOrder(@PathVariable Long id){
+		
+		ReportOrder report = reportOrderService.getByIdReportOrder(id);
+		return ResponseEntity.ok(report);
 	}
 }
