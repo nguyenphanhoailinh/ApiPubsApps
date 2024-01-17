@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.SpringDemo.services.DishService;
 import com.example.SpringDemo.services.OrderService;
-import com.example.SpringDemo.services.ReportOrderService;
+import com.example.SpringDemo.services.BillService;
 import com.example.SpringDemo.services.UserService;
 
 @RestController
@@ -39,39 +39,50 @@ public class OrderController {
 	@Autowired
 	private OrderRepository orderRepository;
 	@Autowired
-	private ReportOrderService reportOrderService;
+	private BillService billService;
 	@Autowired
 	TableRepository tableRepository;
 
 	@GetMapping("/all")
     public ResponseEntity<List<Order>> getAllOrders() {
         List<Order> orders = orderService.getAllOrders();
-        return ResponseEntity.ok().body(orders);
+        return ResponseEntity.ok(orders);
     }
 	@GetMapping("/{idtable}")
-    public ResponseEntity<List<Order>> getOrdersByTableId(@PathVariable Long idtable) {
-        List<Order> orders = orderService.getOrdersByTableId(idtable);
+    public ResponseEntity<Order> getOrdersByTableId(@PathVariable Long idtable) {
+        Order orders = orderService.getOrdersByTableId(idtable);
         return ResponseEntity.ok().body(orders);
     }
 	@PostMapping("/new")
 	public ResponseEntity<Order> createOrder(@RequestBody OrderDish orderdish) {
 		
-		System.out.print(orderdish);
+		
 		
 		try {
 			List<Dish> dishes = dishService.getlistidDish(orderdish.getIddish());
-
 			Order _order = new Order();
-			_order.setDishes(dishes);
-			_order.setNgaygiodat(orderdish.getNgaygiodat());
-
 			TableEntity table = tableRepository.getById(orderdish.getIdtable());
-			// Sau đó gán cho _order
-			_order.setTable(table);
+			
+			if(table.getStatus().toString().equals("dangSuDung")) {
+				_order =orderService.getOrdersByTableId(table.getIdtable());
+				_order.getDishes().addAll(dishes);
+				_order.setDishes(_order.getDishes());
+				orderService.updateOrder(_order);
+			}else {
+				_order.setDishes(dishes);
+				_order.setNgaygiodat(orderdish.getNgaygiodat());
 
-			_order.setTotalAmount(orderdish.getTotalAmount());
-			System.out.print(_order);
-			orderService.createOrder(_order);
+				
+				// Sau đó gán cho _order
+				_order.setTable(table);
+
+				_order.setTotalAmount(orderdish.getTotalAmount());
+				orderService.createOrder(_order);
+				table.setStatus(Status.dangSuDung);
+				tableService.updateTable(table);
+			}
+			
+			
 			return new ResponseEntity<>(_order, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -84,48 +95,43 @@ public class OrderController {
 		Order updated = orderService.updateOrder(order);
 		return ResponseEntity.ok(updated);
 	}
-
-//	@DeleteMapping("/delete/{id}")
-//	public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
-//		Order order =orderService.getOrderById(id);
-//		if(order == null) {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");
-//		}
-//		ReportOrder reportOrder = new ReportOrder();
-//		reportOrder.setIdorder(order.getIdorder());
-//		reportOrder.setDeletedAt(new Date());
-//		reportOrderService.saveReportOrder(reportOrder);
-//		orderService.deleteOrder(id);
-//		return ResponseEntity.ok("Order deleted ");
-//	}
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
 	    Order order = orderService.getOrderById(id);
+	    TableEntity table = order.getTable();
 	    if(order == null) {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");
 	    }
-	    ReportOrder reportOrder = new ReportOrder();
-	    reportOrder.setIdorder(order.getIdorder());
-	    reportOrder.setDishes(order.getDishes().stream().map(dish -> {
+	    Bill bill = new Bill();
+	    bill.setIdorder(order.getIdorder());
+	    bill.setDishes(order.getDishes().stream().map(dish -> {
 	        DishInfo dishInfo = new DishInfo();
 	        dishInfo.setDishname(dish.getNamedish());
 	        dishInfo.setPrice(dish.getPrice());
 	        return dishInfo;
 	    }).collect(Collectors.toList()));
-	    reportOrder.setNgaygiodat(order.getNgaygiodat());
-	    reportOrder.setTableId(order.getTable().getIdtable());
-	    reportOrder.setStatus(order.getStatus().toString());
-	    reportOrder.setTotalAmount(order.getTotalAmount());
-	    reportOrder.setDeletedAt(new Date());
-	    reportOrderService.saveReportOrder(reportOrder);
+	    bill.setNgaygiodat(order.getNgaygiodat());
+	    bill.setIdtable(order.getTable().getIdtable());
+	    bill.setTablename(order.getTable().getNametable());
+	    bill.setTotalAmount(order.getTotalAmount());
+	    bill.setDeletedAt(new Date());
+	    billService.saveBill(bill);
 	    orderService.deleteOrder(id);
-	    return ResponseEntity.ok("Order deleted and saved to ReportOrder");
+	    table.setStatus(Status.conTrong);
+		tableService.updateTable(table);
+	    return ResponseEntity.ok("Order deleted and saved to bill");
 	}
 	@GetMapping("/report/{id}")
-	public ResponseEntity<?> getReportOrder(@PathVariable Long id){
+	public ResponseEntity<?> getBillById(@PathVariable Long id){
 		
-		ReportOrder report = reportOrderService.getByIdReportOrder(id);
-		return ResponseEntity.ok(report);
+		Bill bill = billService.getByIdReportOrder(id);
+		return ResponseEntity.ok(bill);
 	}
+	@GetMapping("/bill/all")
+	public ResponseEntity<List<Bill>> getAllBill() {
+        List<Bill> bills = billService.getAllBill();
+        return ResponseEntity.ok(bills);
+    }
+
 }

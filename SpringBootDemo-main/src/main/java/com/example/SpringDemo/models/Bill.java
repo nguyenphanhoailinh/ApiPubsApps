@@ -20,12 +20,12 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "report_orders")
-public class ReportOrder {
+@Entity(name = "bills")
+public class Bill {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idreport;
+	private Long idbill;
 
 	@Column(name = "idorder")
 	private Long idorder;
@@ -35,11 +35,10 @@ public class ReportOrder {
 	private Date ngaygiodat;
 
 	@Column(name = "idtable")
-	private Long tableId; // assuming TableEntity has a getId() method
-
-	@Column(name = "status", length = 50)
-	private String status; // assuming Status has a toString() method
-
+	private Long idtable;
+	@Column(name = "tablename")
+	private String tablename;
+	
 	@Column(name = "total_amount")
 	private double totalAmount;
 

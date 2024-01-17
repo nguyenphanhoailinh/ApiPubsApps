@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DishInfo {
-    private String dishname;
-    private float price;
-
+	private String dishname;
+	private float price;
 
 }
